@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>参加者編集 | ハニーポイント</title>
+  <style>
+    :root{
+      --honey:#ffcc33; --honey-deep:#f59e0b; --cream:#fffaf0; --brown:#6b3f1f;
+      --brown-dark:#3f2818; --line:#ead9be; --danger:#d94841;
+      --shadow:0 12px 30px rgba(74,44,20,.12);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;font-family:"Hiragino Sans","Yu Gothic","Meiryo",system-ui,-apple-system,sans-serif;
+      color:var(--brown-dark);background:var(--cream);min-height:100vh
+    }
+    .wrap{width:min(980px,calc(100% - 28px));margin:auto;padding:28px 0 50px}
+    .topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}
+    h1{margin:0;color:var(--brown);font-size:clamp(27px,5vw,42px)}
+    .back{
+      text-decoration:none;color:var(--brown);font-weight:900;background:#fff;border:2px solid var(--brown);
+      border-radius:14px;padding:10px 14px
+    }
+    .grid{display:grid;grid-template-columns:360px 1fr;gap:18px;align-items:start}
+    .card{background:#fff;border:2px solid var(--line);border-radius:24px;padding:20px;box-shadow:var(--shadow)}
+    .card h2{margin:0 0 16px;color:var(--brown)}
+    .field{margin-bottom:13px}
+    label{display:block;font-size:13px;font-weight:900;margin-bottom:6px;color:#6f5138}
+    input{
+      width:100%;border:2px solid var(--line);border-radius:13px;padding:12px 13px;
+      font:inherit;font-size:16px;outline:none;background:#fffdf8
+    }
+    input:focus{border-color:var(--honey-deep);box-shadow:0 0 0 3px rgba(245,158,11,.13)}
+    .primary{
+      width:100%;border:2px solid var(--brown);border-radius:14px;padding:13px;font:inherit;
+      font-weight:1000;background:var(--honey);color:var(--brown-dark);cursor:pointer;
+      box-shadow:0 4px 0 var(--honey-deep)
+    }
+    .secondary{
+      width:100%;margin-top:9px;border:2px solid var(--line);border-radius:14px;padding:11px;
+      font:inherit;font-weight:900;background:#fff;color:var(--brown);cursor:pointer
+    }
+    .message{min-height:22px;margin-top:12px;font-size:13px;font-weight:800}
+    .list{display:grid;gap:10px}
+    .person{
+      border:1.5px solid var(--line);border-radius:17px;padding:13px;background:#fffdf9;
+      display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center
+    }
+    .person-name{font-weight:1000;font-size:17px}
+    .mini{font-size:12px;opacity:.75;margin-top:4px;line-height:1.5}
+    .actions{display:flex;gap:7px}
+    .btn{
+      border:1.5px solid var(--line);background:#fff;border-radius:11px;padding:8px 10px;
+      font:inherit;font-size:12px;font-weight:900;cursor:pointer
+    }
+    .delete{color:var(--danger);border-color:#f0c2bf}
+    .empty{text-align:center;padding:28px;border:2px dashed var(--line);border-radius:16px;color:#8b6a4d}
+    .helper{
+      margin-top:14px;padding:12px 13px;background:#fff7d6;border-radius:14px;
+      font-size:12px;line-height:1.65
+    }
+    .danger-zone{margin-top:14px}
+    .reset{
+      border:none;background:none;color:var(--danger);font:inherit;font-size:12px;
+      font-weight:900;cursor:pointer
+    }
+    @media(max-width:760px){
+      .grid{grid-template-columns:1fr}
+      .topbar{align-items:flex-start;flex-direction:column}
+      .back{align-self:flex-start}
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="topbar">
+      <div>
+        <h1>🍯 参加者・得点編集</h1>
+        <div style="margin-top:5px;font-size:13px;opacity:.7;font-weight:700">/add-player</div>
+      </div>
+      <a class="back" href="/">← ランキングへ戻る</a>
+    </div>
+
+    <div class="grid">
+      <section class="card">
+        <h2 id="formTitle">参加者を追加</h2>
+        <form id="playerForm">
+          <input type="hidden" id="editId">
+
+          <div class="field">
+            <label for="name">名前</label>
+            <input id="name" maxlength="30" placeholder="例：たけしん" required>
+          </div>
+
+          <div class="field">
+            <label for="mole">モグラ叩き</label>
+            <input id="mole" type="number" min="0" step="1" value="0" required>
+          </div>
+
+          <div class="field">
+            <label for="drop">ハニードロップ</label>
+            <input id="drop" type="number" min="0" step="1" value="0" required>
+          </div>
+
+          <div class="field">
+            <label for="bowling">ボーリング</label>
+            <input id="bowling" type="number" min="0" step="1" value="0" required>
+          </div>
+
+          <button class="primary" type="submit" id="submitBtn">＋ 追加する</button>
+          <button class="secondary" type="button" id="cancelBtn" hidden>編集をキャンセル</button>
+          <div class="message" id="message"></div>
+        </form>
+
+        <div class="helper">
+          保存した内容はこのブラウザの <b>localStorage</b> に保存されます。
+          ページを閉じてもデータは残ります。
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>現在の参加者 <span id="count"></span></h2>
+        <div class="list" id="playerList"></div>
+        <div class="danger-zone">
+          <button class="reset" id="resetBtn">初期データに戻す</button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const STORAGE_KEY = "honeyRankingPlayersV1";
+
+    const defaultPlayers = [
+      { id:"p1", name:"プレイヤーA", mole:42, drop:35, bowling:51 },
+      { id:"p2", name:"プレイヤーB", mole:37, drop:46, bowling:39 },
+      { id:"p3", name:"プレイヤーC", mole:50, drop:29, bowling:41 },
+      { id:"p4", name:"プレイヤーD", mole:31, drop:40, bowling:45 },
+      { id:"p5", name:"プレイヤーE", mole:44, drop:32, bowling:36 }
+    ];
+
+    function savePlayers(players){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(players));
+    }
+
+    function loadPlayers(){
+      try{
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if(saved) return JSON.parse(saved);
+      }catch(e){}
+      savePlayers(defaultPlayers);
+      return [...defaultPlayers];
+    }
+
+    function escapeHtml(str){
+      return String(str).replace(/[&<>"']/g,ch=>({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+      }[ch]));
+    }
+
+    function newId(){
+      return "p_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2,7);
+    }
+
+    function scoreValue(id){
+      const value = Number(document.getElementById(id).value);
+      return Number.isFinite(value) && value >= 0 ? Math.floor(value) : 0;
+    }
+
+    function showMessage(text,error=false){
+      const el = document.getElementById("message");
+      el.textContent = text;
+      el.style.color = error ? "#d94841" : "#2f7d32";
+      setTimeout(()=>{ if(el.textContent===text) el.textContent=""; },2200);
+    }
+
+    function renderList(){
+      const players = loadPlayers();
+      const list = document.getElementById("playerList");
+
+      document.getElementById("count").textContent = `(${players.length}人)`;
+      list.innerHTML = "";
+
+      if(players.length===0){
+        list.innerHTML = '<div class="empty">まだ参加者がいません。</div>';
+        return;
+      }
+
+      players.forEach(p=>{
+        const total = p.mole + p.drop + p.bowling;
+        const div = document.createElement("div");
+        div.className = "person";
+        div.innerHTML = `
+          <div>
+            <div class="person-name">${escapeHtml(p.name)}</div>
+            <div class="mini">
+              モグラ ${p.mole}点 ／ ハニー ${p.drop}点 ／ ボーリング ${p.bowling}点<br>
+              総合 ${total}点
+            </div>
+          </div>
+          <div class="actions">
+            <button class="btn" data-edit="${p.id}">編集</button>
+            <button class="btn delete" data-delete="${p.id}">削除</button>
+          </div>`;
+        list.appendChild(div);
+      });
+
+      list.querySelectorAll("[data-edit]").forEach(btn=>{
+        btn.addEventListener("click",()=>startEdit(btn.dataset.edit));
+      });
+
+      list.querySelectorAll("[data-delete]").forEach(btn=>{
+        btn.addEventListener("click",()=>removePlayer(btn.dataset.delete));
+      });
+    }
+
+    function resetForm(){
+      document.getElementById("playerForm").reset();
+      document.getElementById("editId").value = "";
+      document.getElementById("mole").value = 0;
+      document.getElementById("drop").value = 0;
+      document.getElementById("bowling").value = 0;
+      document.getElementById("formTitle").textContent = "参加者を追加";
+      document.getElementById("submitBtn").textContent = "＋ 追加する";
+      document.getElementById("cancelBtn").hidden = true;
+    }
+
+    function startEdit(id){
+      const p = loadPlayers().find(x=>x.id===id);
+      if(!p) return;
+
+      document.getElementById("editId").value = p.id;
+      document.getElementById("name").value = p.name;
+      document.getElementById("mole").value = p.mole;
+      document.getElementById("drop").value = p.drop;
+      document.getElementById("bowling").value = p.bowling;
+
+      document.getElementById("formTitle").textContent = "参加者を編集";
+      document.getElementById("submitBtn").textContent = "✓ 更新する";
+      document.getElementById("cancelBtn").hidden = false;
+
+      window.scrollTo({top:0,behavior:"smooth"});
+    }
+
+    function removePlayer(id){
+      const players = loadPlayers();
+      const p = players.find(x=>x.id===id);
+      if(!p) return;
+
+      if(!confirm(`「${p.name}」を削除しますか？`)) return;
+
+      savePlayers(players.filter(x=>x.id!==id));
+      renderList();
+      showMessage("削除しました。");
+    }
+
+    document.getElementById("playerForm").addEventListener("submit",e=>{
+      e.preventDefault();
+
+      const name = document.getElementById("name").value.trim();
+      if(!name){
+        showMessage("名前を入力してください。",true);
+        return;
+      }
+
+      const player = {
+        id: document.getElementById("editId").value || newId(),
+        name,
+        mole: scoreValue("mole"),
+        drop: scoreValue("drop"),
+        bowling: scoreValue("bowling")
+      };
+
+      const players = loadPlayers();
+      const index = players.findIndex(x=>x.id===player.id);
+
+      if(index >= 0){
+        players[index] = player;
+        showMessage("更新しました。");
+      }else{
+        players.push(player);
+        showMessage("追加しました。");
+      }
+
+      savePlayers(players);
+      resetForm();
+      renderList();
+    });
+
+    document.getElementById("cancelBtn").addEventListener("click", resetForm);
+
+    document.getElementById("resetBtn").addEventListener("click",()=>{
+      if(!confirm("現在のデータを消して、初期データに戻しますか？")) return;
+      savePlayers(defaultPlayers);
+      resetForm();
+      renderList();
+      showMessage("初期データに戻しました。");
+    });
+
+    renderList();
+  </script>
+</body>
+</html>
