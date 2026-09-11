@@ -1,226 +1,1313 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>ハニーポイント ランキング</title>
+
   <style>
-    :root{
-      --honey:#ffcc33; --honey-deep:#f59e0b; --cream:#fffaf0;
-      --brown:#6b3f1f; --brown-dark:#3f2818; --line:#ead9be;
-      --shadow:0 12px 30px rgba(74,44,20,.12);
+    :root {
+      --honey: #ffcc33;
+      --honey-deep: #f59e0b;
+      --cream: #fffaf0;
+
+      --brown: #6b3f1f;
+      --brown-dark: #3f2818;
+
+      --line: #ead9be;
+
+      --shadow:
+        0 12px 30px rgba(74, 44, 20, 0.12);
     }
-    *{box-sizing:border-box}
-    body{
-      margin:0;font-family:"Hiragino Sans","Yu Gothic","Meiryo",system-ui,-apple-system,sans-serif;
-      color:var(--brown-dark);
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+
+      font-family:
+        "Hiragino Sans",
+        "Yu Gothic",
+        "Meiryo",
+        system-ui,
+        -apple-system,
+        sans-serif;
+
+      color: var(--brown-dark);
+
       background:
-        radial-gradient(circle at 15% 10%, rgba(255,204,51,.18) 0 70px, transparent 72px),
-        radial-gradient(circle at 88% 15%, rgba(245,158,11,.14) 0 110px, transparent 112px),
-        var(--cream);min-height:100vh
+        radial-gradient(
+          circle at 15% 10%,
+          rgba(255, 204, 51, 0.18) 0 70px,
+          transparent 72px
+        ),
+        radial-gradient(
+          circle at 88% 15%,
+          rgba(245, 158, 11, 0.14) 0 110px,
+          transparent 112px
+        ),
+        var(--cream);
+
+      min-height: 100vh;
     }
-    .wrap{width:min(1080px,calc(100% - 28px));margin:0 auto;padding:28px 0 48px}
-    .hero{
-      background:linear-gradient(135deg,#fff7cc,#ffd75d);border:3px solid var(--brown);
-      border-radius:28px;padding:24px;box-shadow:var(--shadow);position:relative;overflow:hidden
+
+    .wrap {
+      width: min(1080px, calc(100% - 28px));
+      margin: 0 auto;
+
+      padding: 28px 0 48px;
     }
-    .hero::after{
-      content:"";position:absolute;right:-40px;bottom:-50px;width:170px;height:170px;
-      border-radius:50%;background:rgba(255,255,255,.28)
+
+    /* =========================
+       上のタイトル部分
+    ========================= */
+
+    .hero {
+      background:
+        linear-gradient(
+          135deg,
+          #fff7cc,
+          #ffd75d
+        );
+
+      border: 3px solid var(--brown);
+
+      border-radius: 28px;
+
+      padding: 24px;
+
+      box-shadow: var(--shadow);
+
+      position: relative;
+      overflow: hidden;
     }
-    .hero-top{display:flex;justify-content:space-between;align-items:center;gap:16px;position:relative;z-index:1}
-    .title{
-      margin:0;font-size:clamp(30px,5vw,52px);letter-spacing:.04em;font-weight:900;
-      color:var(--brown);text-shadow:0 3px 0 rgba(255,255,255,.65)
+
+    .hero::after {
+      content: "";
+
+      position: absolute;
+
+      right: -40px;
+      bottom: -50px;
+
+      width: 170px;
+      height: 170px;
+
+      border-radius: 50%;
+
+      background:
+        rgba(255, 255, 255, 0.28);
     }
-    .sub{margin:8px 0 0;font-size:15px;opacity:.8;font-weight:700;position:relative;z-index:1}
-    .manage-link{
-      display:inline-flex;align-items:center;gap:7px;text-decoration:none;background:#fff;color:var(--brown);
-      border:2px solid var(--brown);border-radius:15px;padding:10px 14px;font-weight:900;
-      white-space:nowrap;box-shadow:0 4px 0 rgba(107,63,31,.15)
+
+    .hero-top {
+      display: flex;
+
+      justify-content: space-between;
+      align-items: center;
+
+      gap: 16px;
+
+      position: relative;
+
+      z-index: 1;
     }
-    .tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0 22px}
-    .tab{
-      appearance:none;border:2px solid var(--brown);background:#fff;color:var(--brown);
-      border-radius:18px;padding:14px 10px;font-weight:900;font-size:15px;cursor:pointer;
-      transition:.18s ease;box-shadow:0 4px 0 rgba(107,63,31,.16)
+
+    .title {
+      margin: 0;
+
+      font-size:
+        clamp(
+          30px,
+          5vw,
+          52px
+        );
+
+      letter-spacing: 0.04em;
+
+      font-weight: 900;
+
+      color: var(--brown);
+
+      text-shadow:
+        0 3px 0
+        rgba(255, 255, 255, 0.65);
     }
-    .tab:hover{transform:translateY(-2px)}
-    .tab.active{background:var(--honey);color:var(--brown-dark);box-shadow:0 4px 0 var(--honey-deep)}
-    .panel{
-      background:rgba(255,255,255,.88);border:2px solid var(--line);border-radius:26px;
-      padding:22px;box-shadow:var(--shadow);backdrop-filter:blur(4px)
+
+    .sub {
+      margin: 8px 0 0;
+
+      font-size: 15px;
+
+      opacity: 0.8;
+
+      font-weight: 700;
+
+      position: relative;
+
+      z-index: 1;
     }
-    .panel-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:18px}
-    .panel h2{margin:0;font-size:28px;color:var(--brown)}
-    .updated{font-size:12px;opacity:.65;font-weight:700}
-    .podium{display:grid;grid-template-columns:1fr 1.08fr 1fr;gap:12px;align-items:end;margin:16px 0 24px}
-    .podium-card{
-      background:#fff;border:2px solid var(--line);border-radius:22px;padding:18px 12px;
-      text-align:center;position:relative;min-height:150px
+
+    /* =========================
+       編集画面ボタン
+    ========================= */
+
+    .manage-link {
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 7px;
+
+      text-decoration: none;
+
+      background: #ffffff;
+
+      color: var(--brown);
+
+      border:
+        2px solid
+        var(--brown);
+
+      border-radius: 15px;
+
+      padding: 10px 14px;
+
+      font-weight: 900;
+
+      white-space: nowrap;
+
+      box-shadow:
+        0 4px 0
+        rgba(107, 63, 31, 0.15);
     }
-    .podium-card.first{min-height:190px;border-color:#e0b000;background:linear-gradient(#fffdf4,#fff7cf)}
-    .medal{
-      width:48px;height:48px;display:grid;place-items:center;margin:-8px auto 8px;border-radius:50%;
-      font-weight:1000;font-size:22px;border:3px solid rgba(0,0,0,.12)
+
+    .manage-link:hover {
+      transform:
+        translateY(-2px);
     }
-    .m1{background:#ffd84f}.m2{background:#dfe5ea}.m3{background:#cf8d50}
-    .name{font-size:18px;font-weight:900;margin:4px 0 2px;word-break:break-word}
-    .score{color:#e8590c;font-size:30px;font-weight:1000;line-height:1;margin-top:10px}
-    .unit{font-size:14px;color:var(--brown);margin-left:3px}
-    .list{display:grid;gap:9px}
-    .row{
-      display:grid;grid-template-columns:58px 1fr auto;align-items:center;gap:12px;background:#fff;
-      border:1.5px solid var(--line);border-radius:16px;padding:13px 14px
+
+    /* =========================
+       ランキング切り替え
+    ========================= */
+
+    .tabs {
+      display: grid;
+
+      grid-template-columns:
+        repeat(4, 1fr);
+
+      gap: 10px;
+
+      margin:
+        18px 0 22px;
     }
-    .rank{width:42px;height:42px;display:grid;place-items:center;border-radius:13px;background:#fff3bf;font-weight:1000;color:var(--brown)}
-    .row .name{margin:0;font-size:16px}
-    .row-score{font-size:20px;font-weight:1000;color:#e8590c;white-space:nowrap}
-    .note{margin-top:18px;border-radius:16px;padding:12px 14px;background:#fff7d6;color:#6b4b1d;font-size:13px;line-height:1.65}
-    .empty{padding:32px;text-align:center;border:2px dashed var(--line);border-radius:18px;color:#8b6a4d;background:#fffdf7;font-weight:700}
-    .footer{text-align:center;margin-top:16px;font-size:12px;opacity:.55}
-    @media(max-width:720px){
-      .hero-top{align-items:flex-start;flex-direction:column}
-      .tabs{grid-template-columns:repeat(2,1fr)}
-      .podium{grid-template-columns:1fr;align-items:stretch}
-      .podium-card.first{order:-1;min-height:160px}
-      .podium-card{min-height:140px}
-      .panel{padding:16px}
-      .panel-head{align-items:flex-start;flex-direction:column}
+
+    .tab {
+      appearance: none;
+
+      border:
+        2px solid
+        var(--brown);
+
+      background: #ffffff;
+
+      color: var(--brown);
+
+      border-radius: 18px;
+
+      padding: 14px 10px;
+
+      font-weight: 900;
+
+      font-size: 15px;
+
+      cursor: pointer;
+
+      transition:
+        0.18s ease;
+
+      box-shadow:
+        0 4px 0
+        rgba(107, 63, 31, 0.16);
+    }
+
+    .tab:hover {
+      transform:
+        translateY(-2px);
+    }
+
+    .tab.active {
+      background:
+        var(--honey);
+
+      color:
+        var(--brown-dark);
+
+      box-shadow:
+        0 4px 0
+        var(--honey-deep);
+    }
+
+    /* =========================
+       ランキング本体
+    ========================= */
+
+    .panel {
+      background:
+        rgba(255, 255, 255, 0.88);
+
+      border:
+        2px solid
+        var(--line);
+
+      border-radius: 26px;
+
+      padding: 22px;
+
+      box-shadow:
+        var(--shadow);
+
+      backdrop-filter:
+        blur(4px);
+    }
+
+    .panel-head {
+      display: flex;
+
+      align-items: end;
+
+      justify-content:
+        space-between;
+
+      gap: 12px;
+
+      margin-bottom: 18px;
+    }
+
+    .panel h2 {
+      margin: 0;
+
+      font-size: 28px;
+
+      color:
+        var(--brown);
+    }
+
+    .updated {
+      font-size: 12px;
+
+      opacity: 0.65;
+
+      font-weight: 700;
+    }
+
+    /* =========================
+       1～3位
+    ========================= */
+
+    .podium {
+      display: grid;
+
+      grid-template-columns:
+        1fr 1.08fr 1fr;
+
+      gap: 12px;
+
+      align-items: end;
+
+      margin:
+        16px 0 24px;
+    }
+
+    .podium-card {
+      background:
+        #ffffff;
+
+      border:
+        2px solid
+        var(--line);
+
+      border-radius: 22px;
+
+      padding:
+        18px 12px;
+
+      text-align: center;
+
+      position: relative;
+
+      min-height: 150px;
+    }
+
+    .podium-card.first {
+      min-height: 190px;
+
+      border-color:
+        #e0b000;
+
+      background:
+        linear-gradient(
+          #fffdf4,
+          #fff7cf
+        );
+    }
+
+    .medal {
+      width: 48px;
+      height: 48px;
+
+      display: grid;
+
+      place-items: center;
+
+      margin:
+        -8px auto 8px;
+
+      border-radius: 50%;
+
+      font-weight: 1000;
+
+      font-size: 22px;
+
+      border:
+        3px solid
+        rgba(0, 0, 0, 0.12);
+    }
+
+    .m1 {
+      background:
+        #ffd84f;
+    }
+
+    .m2 {
+      background:
+        #dfe5ea;
+    }
+
+    .m3 {
+      background:
+        #cf8d50;
+    }
+
+    .name {
+      font-size: 18px;
+
+      font-weight: 900;
+
+      margin:
+        4px 0 2px;
+
+      word-break:
+        break-word;
+    }
+
+    .score {
+      color:
+        #e8590c;
+
+      font-size: 30px;
+
+      font-weight: 1000;
+
+      line-height: 1;
+
+      margin-top: 10px;
+    }
+
+    .unit {
+      font-size: 14px;
+
+      color:
+        var(--brown);
+
+      margin-left: 3px;
+    }
+
+    /* =========================
+       4位以下
+    ========================= */
+
+    .list {
+      display: grid;
+
+      gap: 9px;
+    }
+
+    .row {
+      display: grid;
+
+      grid-template-columns:
+        58px 1fr auto;
+
+      align-items: center;
+
+      gap: 12px;
+
+      background:
+        #ffffff;
+
+      border:
+        1.5px solid
+        var(--line);
+
+      border-radius: 16px;
+
+      padding:
+        13px 14px;
+    }
+
+    .rank {
+      width: 42px;
+      height: 42px;
+
+      display: grid;
+
+      place-items: center;
+
+      border-radius: 13px;
+
+      background:
+        #fff3bf;
+
+      font-weight: 1000;
+
+      color:
+        var(--brown);
+    }
+
+    .row .name {
+      margin: 0;
+
+      font-size: 16px;
+    }
+
+    .row-score {
+      font-size: 20px;
+
+      font-weight: 1000;
+
+      color:
+        #e8590c;
+
+      white-space: nowrap;
+    }
+
+    /* =========================
+       説明部分
+    ========================= */
+
+    .note {
+      margin-top: 18px;
+
+      border-radius: 16px;
+
+      padding:
+        12px 14px;
+
+      background:
+        #fff7d6;
+
+      color:
+        #6b4b1d;
+
+      font-size: 13px;
+
+      line-height: 1.65;
+    }
+
+    .empty {
+      padding: 32px;
+
+      text-align: center;
+
+      border:
+        2px dashed
+        var(--line);
+
+      border-radius: 18px;
+
+      color:
+        #8b6a4d;
+
+      background:
+        #fffdf7;
+
+      font-weight: 700;
+    }
+
+    .footer {
+      text-align: center;
+
+      margin-top: 16px;
+
+      font-size: 12px;
+
+      opacity: 0.55;
+    }
+
+    /* =========================
+       スマホ
+    ========================= */
+
+    @media (max-width: 720px) {
+
+      .hero-top {
+        align-items:
+          flex-start;
+
+        flex-direction:
+          column;
+      }
+
+      .tabs {
+        grid-template-columns:
+          repeat(2, 1fr);
+      }
+
+      .podium {
+        grid-template-columns:
+          1fr;
+
+        align-items:
+          stretch;
+      }
+
+      .podium-card.first {
+        order: -1;
+
+        min-height:
+          160px;
+      }
+
+      .podium-card {
+        min-height:
+          140px;
+      }
+
+      .panel {
+        padding: 16px;
+      }
+
+      .panel-head {
+        align-items:
+          flex-start;
+
+        flex-direction:
+          column;
+      }
+
     }
   </style>
 </head>
+
 <body>
+
   <main class="wrap">
+
+    <!-- =====================
+         タイトル
+    ====================== -->
+
     <section class="hero">
+
       <div class="hero-top">
+
         <div>
-          <h1 class="title">🍯 ハニーポイント ランキング</h1>
-          <p class="sub">ゲームごとの得点と、総合ランキングを表示します。</p>
+
+          <h1 class="title">
+            🍯 ハニーポイント ランキング
+          </h1>
+
+          <p class="sub">
+            ゲームごとの得点と、総合ランキングを表示します。
+          </p>
+
         </div>
-        <a class="manage-link" href="/add-player/">✏️ 編集画面</a>
+
+        <!-- 編集画面 -->
+        <a
+          class="manage-link"
+          href="./add-player/"
+        >
+          ✏️ 編集画面
+        </a>
+
       </div>
+
     </section>
 
-    <nav class="tabs" aria-label="ランキング切り替え">
-      <button class="tab active" data-board="overall">🏆 総合</button>
-      <button class="tab" data-board="mole">🔨 モグラ叩き</button>
-      <button class="tab" data-board="drop">🍯 ハニードロップ</button>
-      <button class="tab" data-board="bowling">🎳 ボーリング</button>
+
+    <!-- =====================
+         ランキング切り替え
+    ====================== -->
+
+    <nav
+      class="tabs"
+      aria-label="ランキング切り替え"
+    >
+
+      <button
+        class="tab active"
+        data-board="overall"
+      >
+        🏆 総合
+      </button>
+
+      <button
+        class="tab"
+        data-board="mole"
+      >
+        🔨 モグラ叩き
+      </button>
+
+      <button
+        class="tab"
+        data-board="drop"
+      >
+        🍯 ハニードロップ
+      </button>
+
+      <button
+        class="tab"
+        data-board="bowling"
+      >
+        🎳 ボーリング
+      </button>
+
     </nav>
 
+
+    <!-- =====================
+         ランキング
+    ====================== -->
+
     <section class="panel">
+
       <div class="panel-head">
-        <h2 id="boardTitle">総合ランキング</h2>
-        <div class="updated" id="updated"></div>
+
+        <h2 id="boardTitle">
+          総合ランキング
+        </h2>
+
+        <div
+          class="updated"
+          id="updated"
+        ></div>
+
       </div>
-      <div class="podium" id="podium"></div>
-      <div class="list" id="rankingList"></div>
-      <div class="note" id="note"></div>
+
+
+      <div
+        class="podium"
+        id="podium"
+      ></div>
+
+
+      <div
+        class="list"
+        id="rankingList"
+      ></div>
+
+
+      <div
+        class="note"
+        id="note"
+      ></div>
+
     </section>
 
-    <div class="footer">Honey Point Ranking / Local Demo</div>
+
+    <div class="footer">
+      Honey Point Ranking
+    </div>
+
   </main>
 
+
   <script>
-    const STORAGE_KEY = "honeyRankingPlayersV1";
+
+    /* ================================
+       保存場所
+    ================================= */
+
+    const STORAGE_KEY =
+      "honeyRankingPlayersV1";
+
+
+    /* ================================
+       初期データ
+    ================================= */
+
     const defaultPlayers = [
-      { id:"p1", name:"プレイヤーA", mole:42, drop:35, bowling:51 },
-      { id:"p2", name:"プレイヤーB", mole:37, drop:46, bowling:39 },
-      { id:"p3", name:"プレイヤーC", mole:50, drop:29, bowling:41 },
-      { id:"p4", name:"プレイヤーD", mole:31, drop:40, bowling:45 },
-      { id:"p5", name:"プレイヤーE", mole:44, drop:32, bowling:36 }
-    ];
 
-    function loadPlayers(){
-      try{
-        const saved = localStorage.getItem(STORAGE_KEY);
-        if(saved) return JSON.parse(saved);
-      }catch(e){}
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultPlayers));
-      return [...defaultPlayers];
-    }
+      {
+        id: "p1",
+        name: "プレイヤーA",
+        mole: 42,
+        drop: 35,
+        bowling: 51
+      },
 
-    const boardInfo = {
-      overall:{ title:"総合ランキング", unit:"点", note:"総合得点は「モグラ叩き＋ハニードロップ＋ボーリング」の合計です。" },
-      mole:{ title:"モグラ叩きランキング", unit:"点", note:"モグラ叩きの得点が高い順に表示しています。" },
-      drop:{ title:"ハニードロップランキング", unit:"点", note:"ハニードロップの得点が高い順に表示しています。" },
-      bowling:{ title:"ボーリングランキング", unit:"点", note:"ボーリングの得点が高い順に表示しています。" }
-    };
+      {
+        id: "p2",
+        name: "プレイヤーB",
+        mole: 37,
+        drop: 46,
+        bowling: 39
+      },
 
-    function getScore(player, board){
-      return board==="overall" ? player.mole + player.drop + player.bowling : player[board];
-    }
+      {
+        id: "p3",
+        name: "プレイヤーC",
+        mole: 50,
+        drop: 29,
+        bowling: 41
+      },
 
-    function sortedPlayers(board){
-      return loadPlayers()
-        .map(p=>({...p, score:getScore(p,board)}))
-        .sort((a,b)=>b.score-a.score || a.name.localeCompare(b.name,"ja"));
-    }
+      {
+        id: "p4",
+        name: "プレイヤーD",
+        mole: 31,
+        drop: 40,
+        bowling: 45
+      },
 
-    function medalClass(rank){ return rank===1 ? "m1" : rank===2 ? "m2" : "m3"; }
-
-    function escapeHtml(str){
-      return String(str).replace(/[&<>"']/g,ch=>({
-        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-      }[ch]));
-    }
-
-    function render(board){
-      const info = boardInfo[board];
-      const data = sortedPlayers(board);
-
-      document.getElementById("boardTitle").textContent = info.title;
-      document.getElementById("note").textContent = info.note;
-      document.getElementById("updated").textContent =
-        "最終表示：" + new Date().toLocaleString("ja-JP");
-
-      const podium = document.getElementById("podium");
-      const list = document.getElementById("rankingList");
-      podium.innerHTML = "";
-      list.innerHTML = "";
-
-      if(data.length===0){
-        podium.innerHTML =
-          '<div class="empty" style="grid-column:1/-1">まだ参加者がいません。編集画面から追加してください。</div>';
-        return;
+      {
+        id: "p5",
+        name: "プレイヤーE",
+        mole: 44,
+        drop: 32,
+        bowling: 36
       }
 
-      [2,1,3].forEach(rank=>{
-        const p = data[rank-1];
-        if(!p) return;
-        const card = document.createElement("div");
-        card.className = "podium-card" + (rank===1 ? " first" : "");
-        card.innerHTML = `
-          <div class="medal ${medalClass(rank)}">${rank}</div>
-          <div class="name">${escapeHtml(p.name)}</div>
-          <div class="score">${p.score}<span class="unit">${info.unit}</span></div>`;
-        podium.appendChild(card);
-      });
+    ];
 
-      data.slice(3).forEach((p,index)=>{
-        const rank = index + 4;
-        const row = document.createElement("div");
-        row.className = "row";
-        row.innerHTML = `
-          <div class="rank">${rank}</div>
-          <div class="name">${escapeHtml(p.name)}</div>
-          <div class="row-score">${p.score}<span class="unit">${info.unit}</span></div>`;
-        list.appendChild(row);
-      });
+
+    /* ================================
+       データ読み込み
+    ================================= */
+
+    function loadPlayers() {
+
+      try {
+
+        const saved =
+          localStorage.getItem(
+            STORAGE_KEY
+          );
+
+        if (saved) {
+          return JSON.parse(saved);
+        }
+
+      } catch (error) {
+
+        console.error(error);
+
+      }
+
+
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(defaultPlayers)
+      );
+
+      return [...defaultPlayers];
+
     }
 
-    document.querySelectorAll(".tab").forEach(btn=>{
-      btn.addEventListener("click",()=>{
-        document.querySelectorAll(".tab").forEach(b=>b.classList.remove("active"));
-        btn.classList.add("active");
-        render(btn.dataset.board);
-      });
-    });
 
-    window.addEventListener("storage",()=>render(document.querySelector(".tab.active").dataset.board));
-    window.addEventListener("focus",()=>render(document.querySelector(".tab.active").dataset.board));
+    /* ================================
+       ランキング情報
+    ================================= */
+
+    const boardInfo = {
+
+      overall: {
+
+        title:
+          "総合ランキング",
+
+        unit:
+          "点",
+
+        note:
+          "総合得点は「モグラ叩き＋ハニードロップ＋ボーリング」の合計です。"
+
+      },
+
+
+      mole: {
+
+        title:
+          "モグラ叩きランキング",
+
+        unit:
+          "点",
+
+        note:
+          "モグラ叩きの得点が高い順に表示しています。"
+
+      },
+
+
+      drop: {
+
+        title:
+          "ハニードロップランキング",
+
+        unit:
+          "点",
+
+        note:
+          "ハニードロップの得点が高い順に表示しています。"
+
+      },
+
+
+      bowling: {
+
+        title:
+          "ボーリングランキング",
+
+        unit:
+          "点",
+
+        note:
+          "ボーリングの得点が高い順に表示しています。"
+
+      }
+
+    };
+
+
+    /* ================================
+       得点計算
+    ================================= */
+
+    function getScore(
+      player,
+      board
+    ) {
+
+      if (
+        board === "overall"
+      ) {
+
+        return (
+          player.mole +
+          player.drop +
+          player.bowling
+        );
+
+      }
+
+      return player[board];
+
+    }
+
+
+    /* ================================
+       順位計算
+    ================================= */
+
+    function sortedPlayers(board) {
+
+      return loadPlayers()
+
+        .map(player => ({
+
+          ...player,
+
+          score:
+            getScore(
+              player,
+              board
+            )
+
+        }))
+
+        .sort(
+          (a, b) =>
+
+            b.score -
+            a.score
+
+            ||
+
+            a.name.localeCompare(
+              b.name,
+              "ja"
+            )
+        );
+
+    }
+
+
+    /* ================================
+       メダル色
+    ================================= */
+
+    function medalClass(rank) {
+
+      if (rank === 1) {
+        return "m1";
+      }
+
+      if (rank === 2) {
+        return "m2";
+      }
+
+      return "m3";
+
+    }
+
+
+    /* ================================
+       HTML安全化
+    ================================= */
+
+    function escapeHtml(str) {
+
+      return String(str).replace(
+
+        /[&<>"']/g,
+
+        char => ({
+
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#039;"
+
+        }[char])
+
+      );
+
+    }
+
+
+    /* ================================
+       ランキング表示
+    ================================= */
+
+    function render(board) {
+
+      const info =
+        boardInfo[board];
+
+      const data =
+        sortedPlayers(board);
+
+
+      document
+        .getElementById(
+          "boardTitle"
+        )
+        .textContent =
+          info.title;
+
+
+      document
+        .getElementById(
+          "note"
+        )
+        .textContent =
+          info.note;
+
+
+      document
+        .getElementById(
+          "updated"
+        )
+        .textContent =
+          "最終表示：" +
+          new Date()
+            .toLocaleString(
+              "ja-JP"
+            );
+
+
+      const podium =
+        document.getElementById(
+          "podium"
+        );
+
+
+      const list =
+        document.getElementById(
+          "rankingList"
+        );
+
+
+      podium.innerHTML = "";
+
+      list.innerHTML = "";
+
+
+      /* 参加者0人 */
+
+      if (
+        data.length === 0
+      ) {
+
+        podium.innerHTML = `
+
+          <div
+            class="empty"
+            style="grid-column: 1 / -1;"
+          >
+
+            まだ参加者がいません。
+            編集画面から追加してください。
+
+          </div>
+
+        `;
+
+        return;
+
+      }
+
+
+      /* =====================
+         1～3位
+      ====================== */
+
+      [
+        2,
+        1,
+        3
+      ].forEach(rank => {
+
+        const player =
+          data[rank - 1];
+
+
+        if (!player) {
+          return;
+        }
+
+
+        const card =
+          document.createElement(
+            "div"
+          );
+
+
+        card.className =
+          "podium-card" +
+          (
+            rank === 1
+              ? " first"
+              : ""
+          );
+
+
+        card.innerHTML = `
+
+          <div
+            class="medal ${medalClass(rank)}"
+          >
+
+            ${rank}
+
+          </div>
+
+
+          <div class="name">
+
+            ${escapeHtml(
+              player.name
+            )}
+
+          </div>
+
+
+          <div class="score">
+
+            ${player.score}
+
+            <span class="unit">
+
+              ${info.unit}
+
+            </span>
+
+          </div>
+
+        `;
+
+
+        podium.appendChild(
+          card
+        );
+
+      });
+
+
+      /* =====================
+         4位以下
+      ====================== */
+
+      data
+        .slice(3)
+        .forEach(
+          (
+            player,
+            index
+          ) => {
+
+            const rank =
+              index + 4;
+
+
+            const row =
+              document.createElement(
+                "div"
+              );
+
+
+            row.className =
+              "row";
+
+
+            row.innerHTML = `
+
+              <div class="rank">
+
+                ${rank}
+
+              </div>
+
+
+              <div class="name">
+
+                ${escapeHtml(
+                  player.name
+                )}
+
+              </div>
+
+
+              <div class="row-score">
+
+                ${player.score}
+
+                <span class="unit">
+
+                  ${info.unit}
+
+                </span>
+
+              </div>
+
+            `;
+
+
+            list.appendChild(
+              row
+            );
+
+          }
+        );
+
+    }
+
+
+    /* ================================
+       タブ切り替え
+    ================================= */
+
+    document
+      .querySelectorAll(
+        ".tab"
+      )
+      .forEach(button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            document
+              .querySelectorAll(
+                ".tab"
+              )
+              .forEach(
+                tab => {
+
+                  tab.classList.remove(
+                    "active"
+                  );
+
+                }
+              );
+
+
+            button.classList.add(
+              "active"
+            );
+
+
+            render(
+              button.dataset.board
+            );
+
+          }
+        );
+
+      });
+
+
+    /* ================================
+       編集後に戻ったとき更新
+    ================================= */
+
+    window.addEventListener(
+      "focus",
+      () => {
+
+        const activeTab =
+          document.querySelector(
+            ".tab.active"
+          );
+
+        render(
+          activeTab.dataset.board
+        );
+
+      }
+    );
+
+
+    window.addEventListener(
+      "storage",
+      () => {
+
+        const activeTab =
+          document.querySelector(
+            ".tab.active"
+          );
+
+        render(
+          activeTab.dataset.board
+        );
+
+      }
+    );
+
+
+    /* ================================
+       最初の表示
+    ================================= */
+
     render("overall");
+
   </script>
+
 </body>
 </html>
